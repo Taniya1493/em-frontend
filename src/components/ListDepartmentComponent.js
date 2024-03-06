@@ -1,25 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getAllDepartments } from '../services/DepartmentService';
+import { Link } from 'react-router-dom';
 
 const ListDepartmentComponent = () => {
 
-    const dummyData = [
-        {
-            id:1,
-            departmentName :'R&D',
-            departmentDescription : "Research and Development"
-        },
-        {
-            id:2,
-            departmentName :'Finance',
-            departmentDescription : "Finance Department"
-        }
-    ]
+    const [departments,setDepartments] = useState([]);
+
+    useEffect(() => {
+        getAllDepartments().then((response) => {
+            console.log(response.data);
+            setDepartments(response.data);
+        }).catch(error => {
+            console.error(error);
+        })
+    },[])
 
   return (
     <div>
         <div className='container'>
             <h1 className='text-center'>List of Departments</h1>
-            {/* <button className="btn btn-primary" onClick={addNewEmployee}>Add Deparment</button> */}
+            <Link to='/add-department' className="btn btn-primary mb-2">Add Department</Link>
             <table className='table table-striped table-bordered'>
                 <thead>
                     <tr>
@@ -31,7 +31,7 @@ const ListDepartmentComponent = () => {
                 </thead>
                 <tbody>
                     {
-                        dummyData.map(department =>
+                        departments.map(department =>
                             <tr key={department.id}>
                                 <td>{department.id}</td>
                                 <td>{department.departmentName}</td>
