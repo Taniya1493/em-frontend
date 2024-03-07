@@ -1,20 +1,37 @@
 import React, { useState } from 'react'
+import { createDepartment } from '../services/DepartmentService';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const DepartmentComponent = () => {
 
   const [departmentName, setDepartmentName] = useState('');
   const [departmentDescription, setDepartmentDescription] = useState('');
 
-  
+  const navigator = useNavigate();
+
+  const { id } = useParams();
+
+
   function pageTitle() {
-    return <h2 className='text-center'>Add Department</h2>
+    if (id) {
+      return <h2 className='text-center'>Update Department</h2>
+    } else {
+      return <h2 className='text-center'>Add Department</h2>
+    }
   }
 
   function saveOrUpdateDepartment(e) {
     e.preventDefault();
 
     const department = { departmentName, departmentDescription }
-      console.log(department)
+    console.log(department)
+
+    createDepartment(department).then((response) => {
+      console.log(response.data);
+      navigator('/departments');
+    }).catch(error => {
+      console.log(error);
+    })
   }
 
 

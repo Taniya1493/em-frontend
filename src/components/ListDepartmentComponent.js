@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { getAllDepartments } from '../services/DepartmentService';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+
 
 const ListDepartmentComponent = () => {
 
     const [departments,setDepartments] = useState([]);
+
+    const navigator = useNavigate();
 
     useEffect(() => {
         getAllDepartments().then((response) => {
@@ -14,6 +17,10 @@ const ListDepartmentComponent = () => {
             console.error(error);
         })
     },[])
+
+    function updateDepartment(id) {
+        navigator(`/update-department/${id}`)
+    }
 
   return (
     <div>
@@ -36,11 +43,11 @@ const ListDepartmentComponent = () => {
                                 <td>{department.id}</td>
                                 <td>{department.departmentName}</td>
                                 <td>{department.departmentDescription}</td>
-                                {/* <td>
-                                    <button className='btn btn-info' onClick={() => updateEmployee(employee.id)}>Update</button>
-                                    <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)} 
-                                        style={{ marginLeft: '10px' }}>Delete</button>
-                                </td> */}
+                                <td>
+                                    <button className='btn btn-info' onClick={() => updateDepartment(department.id)}>Update</button>
+                                    {/* <button className='btn btn-danger' onClick={() => removeEmployee(employee.id)} 
+                                        style={{ marginLeft: '10px' }}>Delete</button> */}
+                                </td>
                             </tr>
                         )
                     }
